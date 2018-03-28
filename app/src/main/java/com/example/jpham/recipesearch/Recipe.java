@@ -36,7 +36,7 @@ public class Recipe {
     }
 
     public String getImage() {
-        return image;
+        return "https://spoonacular.com/recipeImages/" + id;
     }
 
     public static Recipe fromJson(JSONObject jsonObject){

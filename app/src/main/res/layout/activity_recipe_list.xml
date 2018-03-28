@@ -8,7 +8,7 @@
     tools:context=".RecipeListActivity">
 
     <ListView
-        android:id="@+id/lv_Recipes"
+        android:id="@+id/lvRecipes"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
