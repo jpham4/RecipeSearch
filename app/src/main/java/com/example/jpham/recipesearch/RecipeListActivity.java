@@ -7,10 +7,10 @@ import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,28 +39,29 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void fetchRecipes() {
-        Future<HttpResponse<Recipe>> future = Unirest.post("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search")
+        Future<HttpResponse<JsonNode>> future = Unirest.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search?offset=0&diet=vegetarian&excludeIngredients=coconut&intolerances=egg%2C+gluten&number=10&query=burger&type=main+course")
+                .header("accept", "application/json")
                 .header("X-Mashape-Key", "H9O4xN0hDKmshwiRqRSqGj28V9I4p1oEMdYjsn7GuEPdPGOk0q")
                 .header("X-Mashape-Host", "spoonacular-recipe-food-nutrition-v1.p.mashape.com")
-                .asJsonAsync(new Callback<Recipe>() {
+                .asJsonAsync(new Callback<JsonNode>() {
+                    @Override
+                    public void completed(HttpResponse<JsonNode> httpResponse) {
+                        int code = httpResponse.getCode();
+                        Map<String, String> headers = httpResponse.getHeaders();
+                        JsonNode body = httpResponse.getBody();
+                        InputStream rawBody = httpResponse.getRawBody();
+                    }
 
+                    @Override
                     public void failed(UnirestException e) {
                         System.out.println("The request has failed");
                     }
 
-                    public void completed(HttpResponse<Recipe> response) {
-                        int code = response.getCode();
-                        Map<String, String> headers = response.getHeaders();
-                        Recipe body = response.getBody();
-                        InputStream rawBody = response.getRawBody();
-                    }
-
+                    @Override
                     public void cancelled() {
                         System.out.println("The request has been cancelled");
                     }
-
                 });
-
             }
         }
 
