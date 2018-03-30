@@ -1,24 +1,16 @@
 package com.example.jpham.recipesearch;
 
-import android.preference.PreferenceActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.async.Callback;
-import com.mashape.unirest.http.exceptions.UnirestException;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.Future;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -39,7 +31,26 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     private void fetchRecipes() {
-
+        client = new RecipeClient();
+        client.getRecipes("burger", new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                try {
+                    JSONArray results = null;
+                    if (response != null){
+                        results = response.getJSONArray("results");
+                        final ArrayList<Recipe> recipes = Recipe.fromJson(results);
+                        recipeAdapter.clear();
+                        for (Recipe recipe : recipes){
+                            recipeAdapter.add(recipe);
+                        }
+                        recipeAdapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
             }
         }
 

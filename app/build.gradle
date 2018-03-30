@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 repositories{
@@ -34,5 +38,4 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'com.mashape.unirest:unirest-android:1.0+'
-    implementation 'com.mashape.unirest:unirest-java:1.4.9'
 }
